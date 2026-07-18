@@ -10,8 +10,8 @@ WORKDIR /app
 # Enable bytecode compilation
 ENV UV_COMPILE_BYTECODE=1
 
-# Copy dependency configuration files
-COPY pyproject.toml ./
+# Copy dependency configuration files and lock files
+COPY pyproject.toml uv.lock ./
 
 # Install dependencies into the default .venv directory
 RUN uv sync --no-install-project --no-dev

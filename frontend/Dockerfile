@@ -4,10 +4,10 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Copy package and lock files
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy source code and config files
 COPY tsconfig.json vite.config.ts eslint.config.js index.html ./

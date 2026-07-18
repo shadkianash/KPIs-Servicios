@@ -36,6 +36,11 @@ app.add_middleware(
 
 
 @app.get("/health")
+@app.get("/api/health")
 def health_check() -> dict[str, str]:
     """Exposes simple healthcheck state."""
-    return {"status": "ok", "service": "KPIs-Servicios API"}
+    return {
+        "status": "ok",
+        "service": "KPIs Servicios API",
+        "version": "0.1.0",
+    }

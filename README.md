@@ -97,7 +97,7 @@ The repository is structured logically to separate concerns and support automate
 
 ---
 
-## 5. Getting Started (Phase 0.1 Bootstrap)
+## 5. Getting Started (Phase 0.2 Bootstrap)
 
 ### Prerequisites
 Make sure you have the following installed on your machine:
@@ -136,12 +136,13 @@ Once started, the following endpoints and applications are automatically exposed
 
 ### Health Endpoint
 The backend's operational health state can be verified directly:
-- **URL**: `GET http://localhost/health`
+- **URL**: `GET http://localhost/api/health` (or `/health`)
 - **Response Layout (`200 OK`)**:
   ```json
   {
-      "status": "ok",
-      "service": "KPIs-Servicios API"
+    "status": "ok",
+    "service": "KPIs Servicios API",
+    "version": "0.1.0"
   }
   ```
 
