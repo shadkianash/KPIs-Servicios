@@ -1,19 +1,26 @@
 import React from "react";
-import { Center, Stack, Title, Text } from "@mantine/core";
+import { MantineProvider, Title, Text, Stack, Card } from "@mantine/core";
+import { theme } from "./theme/theme";
+import AppLayout from "./layouts/AppLayout";
+import HealthPage from "./pages/HealthPage";
 
 export default function App(): React.JSX.Element {
   return (
-    <Center
-      style={{ width: "100vw", height: "100vh", backgroundColor: "#f8f9fa" }}
-    >
-      <Stack align="center" gap="md">
-        <Title order={1} style={{ color: "#228be6" }}>
-          KPIs Servicios
-        </Title>
-        <Text size="xl" fw={500} c="dimmed">
-          Bootstrap completed successfully.
-        </Text>
-      </Stack>
-    </Center>
+    <MantineProvider theme={theme}>
+      <AppLayout>
+        <Stack gap="xl">
+          <Card shadow="xs" padding="lg" radius="md" withBorder>
+            <Title order={2} style={{ color: "#2d3748" }} mb="xs">
+              KPIs Servicios
+            </Title>
+            <Text size="md" c="dimmed" fw={500}>
+              Bootstrap completed successfully.
+            </Text>
+          </Card>
+
+          <HealthPage />
+        </Stack>
+      </AppLayout>
+    </MantineProvider>
   );
 }
