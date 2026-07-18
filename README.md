@@ -27,16 +27,17 @@ This repository is designed to grow and sustain itself for many years. We place 
 
 ### Backend
 - **Language**: Python 3.13
+- **Package Manager**: uv
 - **Framework**: FastAPI (for modular API design)
 - **ORM & Migrations**: SQLAlchemy 2.x and Alembic
 - **Validation**: Pydantic v2
-- **Database & Cache**: PostgreSQL (primary store) and Redis (caching and rate-limiting)
+- **Database & Cache**: PostgreSQL 17 (primary store) and Redis 7 (caching and rate-limiting)
 - **Data Engineering**: Polars (used for high-performance processing of the daily CSV files)
 - **Testing**: Pytest
 
 ### Frontend
 - **Framework**: React with TypeScript and Vite
-- **UI Library**: Mantine
+- **UI Library**: Mantine (v7)
 - **Grid Components**: AG Grid Enterprise (for high-volume tabular data view/analysis)
 - **Visualizations**: Apache ECharts
 - **State & Queries**: TanStack Query and Zustand
@@ -62,8 +63,28 @@ The repository is structured logically to separate concerns and support automate
 ├── .ai/                    # AI Agent Context, instruction files, and guides
 ├── docs/                   # Product & Technical documentation (Architecture, API, DB, Runbooks)
 ├── backend/                # FastAPI application workspace
+│   ├── app/                # Main package directory
+│   │   ├── api/            # API routers and version controllers
+│   │   ├── core/           # Configuration settings, logging, and security
+│   │   ├── db/             # DB connection session handlers and Base metadata
+│   │   ├── models/         # SQLAlchemy 2.x relational model definitions
+│   │   ├── schemas/        # Pydantic v2 validation and serialization schemas
+│   │   ├── services/       # Core business logic services and Polars engine
+│   │   └── loaders/        # Ingestion loader interface and CSV loaders
+│   ├── migrations/         # Alembic database migrations history
+│   └── tests/              # Pytest test suites (unit and integrations)
 ├── frontend/               # Vite + React + TypeScript workspace
-└── infra/                  # Infrastructure configurations (Docker, Nginx, Compose)
+│   ├── src/                # Frontend application code
+│   │   ├── components/     # Reusable UI elements, wrapping ECharts & AG Grid
+│   │   ├── hooks/          # Custom utility and TanStack Query state hooks
+│   │   ├── pages/          # Primary page views (Dashboard, Ingestion, Reports)
+│   │   ├── services/       # API networking and client handlers
+│   │   ├── state/          # UI state stores using Zustand
+│   │   └── types/          # Centralized TypeScript interface files
+│   └── tests/              # Vitest components and Playwright E2E tests
+└── infra/                  # Infrastructure configurations
+    ├── nginx/              # Nginx proxy profiles and routes mapping
+    └── docker-compose.yml  # Docker compose orchestration definition
 ```
 
 ---
@@ -76,13 +97,81 @@ The repository is structured logically to separate concerns and support automate
 
 ---
 
-## 5. Getting Started
+## 5. Getting Started (Phase 0.1 Bootstrap)
 
-Detailed installation, execution, and local deployment runbooks will be established inside the `docs/runbooks/` folder. Currently, this repository holds the scaffold structure and baseline documentation to guide future implementation phases.
+### Prerequisites
+Make sure you have the following installed on your machine:
+- [Docker](https://docs.docker.com/get-docker/) (v24.0.0 or later)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2.20.0 or later)
+- (Optional) [uv](https://github.com/astral-sh/uv) and [Node.js](https://nodejs.org/) (v22+) for running quality checks and unit tests locally.
+
+### Installation & Execution
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository_url>
+   cd KPIs-Servicios
+   ```
+
+2. **Configure environment variables**:
+   Create a local configuration using the example template:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Spin up the Docker Compose workspace**:
+   Run the following command from the repository root:
+   ```bash
+   docker compose -f infra/docker-compose.yml up --build
+   ```
+
+### Available Services
+Once started, the following endpoints and applications are automatically exposed:
+
+- **Reverse Proxy**: `http://localhost` (Port 80)
+- **Frontend App**: `http://localhost` (Redirected to the Vite React dashboard displaying the success message)
+- **Backend API Docs (Swagger)**: `http://localhost/docs` (FastAPI Swagger interface)
+- **Database (PostgreSQL)**: `localhost:5432` (Persistent data store)
+- **Cache (Redis)**: `localhost:6379` (In-memory storage)
+
+### Health Endpoint
+The backend's operational health state can be verified directly:
+- **URL**: `GET http://localhost/health`
+- **Response Layout (`200 OK`)**:
+  ```json
+  {
+      "status": "ok",
+      "service": "KPIs-Servicios API"
+  }
+  ```
 
 ---
 
-## 6. License
+## 6. Running Local Quality Checks
+
+To run unit tests and quality checkers on your local system:
+
+### Backend (Python)
+Ensure you are in the `/backend` folder:
+```bash
+cd backend
+uv run pytest
+uv run ruff check .
+uv run mypy .
+```
+
+### Frontend (Node/TypeScript)
+Ensure you are in the `/frontend` folder:
+```bash
+cd frontend
+npm run test
+npm run lint
+npm run format:check
+```
+
+---
+
+## 7. License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
