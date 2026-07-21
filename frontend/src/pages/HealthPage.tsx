@@ -22,7 +22,9 @@ export default function HealthPage(): React.JSX.Element {
       })
       .catch((err) => {
         console.error("Failed to fetch health state:", err);
-        setError("Backend is unreachable. Please verify if the API service is currently active.");
+        setError(
+          "Backend is unreachable. Please verify if the API service is currently active."
+        );
       })
       .finally(() => {
         setLoading(false);
@@ -30,7 +32,13 @@ export default function HealthPage(): React.JSX.Element {
   }, []);
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder style={{ maxWidth: 450, margin: "20px auto" }}>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{ maxWidth: 450, margin: "20px auto" }}
+    >
       <Text fw={700} size="lg" mb="md">
         Backend status
       </Text>
@@ -60,7 +68,11 @@ export default function HealthPage(): React.JSX.Element {
               Version: {health.version}
             </Text>
           </div>
-          <Badge color={health.status === "ok" ? "green" : "orange"} variant="light" size="lg">
+          <Badge
+            color={health.status === "ok" ? "green" : "orange"}
+            variant="light"
+            size="lg"
+          >
             {health.status.toUpperCase()}
           </Badge>
         </Group>
