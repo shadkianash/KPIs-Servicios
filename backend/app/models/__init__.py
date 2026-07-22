@@ -1,4 +1,5 @@
 # Relational SQLAlchemy models
+from app.models.analytics import DailySnapshot, KPIExecution, MonthlySnapshot
 from app.models.operational import (
     Client,
     Engineer,
@@ -29,4 +30,7 @@ __all__ = [
     "TicketHistory",
     "TimeEntry",
     "SyncJob",
+    "KPIExecution",
+    "DailySnapshot",
+    "MonthlySnapshot",
 ]
