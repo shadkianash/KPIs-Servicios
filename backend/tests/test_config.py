@@ -15,7 +15,7 @@ def test_settings_singleton() -> None:
 
 
 def test_tracing_middleware_headers() -> None:
-    """Verify TraceAndTimingMiddleware injects Request ID and Correlation ID in response headers."""
+    """Verify trace middleware injects request and correlation ID headers."""
     response = client.get("/api/v1/health")
     assert response.status_code == 200
     assert "X-Request-ID" in response.headers
