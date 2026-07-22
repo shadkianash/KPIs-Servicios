@@ -1,12 +1,22 @@
 import React from "react";
-import { AppShell, Burger, Group, Text, NavLink, Stack, Box } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Group,
+  Text,
+  NavLink,
+  Stack,
+  Box,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AppLayout({ children }: AppLayoutProps): React.JSX.Element {
+export default function AppLayout({
+  children,
+}: AppLayoutProps): React.JSX.Element {
   const [opened, { toggle }] = useDisclosure();
 
   return (
@@ -41,7 +51,14 @@ export default function AppLayout({ children }: AppLayoutProps): React.JSX.Eleme
 
       <AppShell.Main style={{ backgroundColor: "#f8f9fa" }}>
         <Box style={{ minHeight: "calc(100vh - 140px)" }}>{children}</Box>
-        <Box component="footer" style={{ borderTop: "1px solid #e9ecef", paddingTop: 15, marginTop: 30 }}>
+        <Box
+          component="footer"
+          style={{
+            borderTop: "1px solid #e9ecef",
+            paddingTop: 15,
+            marginTop: 30,
+          }}
+        >
           <Group justify="space-between" px="md">
             <Text size="xs" c="dimmed">
               © 2026 Maximiliano Cittadini. All rights reserved.
