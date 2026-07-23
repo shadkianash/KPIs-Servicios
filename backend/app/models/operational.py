@@ -2,7 +2,7 @@ import uuid
 from datetime import UTC, datetime
 from typing import Any
 
-from sqlalchemy import JSON, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -17,6 +17,7 @@ class Client(Base):
     name: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False, index=True
     )
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
 class Engineer(Base):
@@ -28,6 +29,7 @@ class Engineer(Base):
     name: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False, index=True
     )
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
 class Technology(Base):
@@ -39,6 +41,7 @@ class Technology(Base):
     name: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False, index=True
     )
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
 class Team(Base):
@@ -50,6 +53,7 @@ class Team(Base):
     name: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False, index=True
     )
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
 
 class Ticket(Base):

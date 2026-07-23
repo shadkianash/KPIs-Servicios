@@ -24,6 +24,7 @@ def upgrade() -> None:
         "clients",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("name", sa.String(length=100), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False, server_default="true"),
         sa.PrimaryKeyConstraint("id", name="pk_clients"),
     )
     op.create_index("ix_clients_name", "clients", ["name"], unique=True)
@@ -33,6 +34,7 @@ def upgrade() -> None:
         "engineers",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("name", sa.String(length=100), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False, server_default="true"),
         sa.PrimaryKeyConstraint("id", name="pk_engineers"),
     )
     op.create_index("ix_engineers_name", "engineers", ["name"], unique=True)
@@ -42,6 +44,7 @@ def upgrade() -> None:
         "technologies",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("name", sa.String(length=100), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False, server_default="true"),
         sa.PrimaryKeyConstraint("id", name="pk_technologies"),
     )
     op.create_index("ix_technologies_name", "technologies", ["name"], unique=True)
@@ -51,6 +54,7 @@ def upgrade() -> None:
         "teams",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("name", sa.String(length=100), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False, server_default="true"),
         sa.PrimaryKeyConstraint("id", name="pk_teams"),
     )
     op.create_index("ix_teams_name", "teams", ["name"], unique=True)
