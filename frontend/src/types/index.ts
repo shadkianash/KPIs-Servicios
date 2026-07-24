@@ -83,3 +83,23 @@ export interface FilterState {
   sort: string | null;
   order: "asc" | "desc" | null;
 }
+
+// KPI status evaluation framework typing specs (CSAP-007)
+export type KPIDirection = "higher-is-better" | "lower-is-better";
+export type KPIStatus = "success" | "warning" | "critical" | "neutral";
+
+export interface KPICardPolicy {
+  id: string;
+  name: string;
+  target: number;
+  warning: number;
+  critical: number;
+  direction: KPIDirection;
+  unit: string;
+}
+
+export interface KPIEvaluationResult {
+  status: KPIStatus;
+  color: string;
+  message: string;
+}

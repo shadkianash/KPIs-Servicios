@@ -16,10 +16,11 @@ The frontend codebase is organized into isolated, thematic folders under `src/` 
 - `src/stores/`: Zustand state modules restricted to local UI/UX settings.
 - `src/theme/`: Mantine design systems.
 - `src/types/`: Strict TypeScript interface models.
+- `src/utils/`: Custom helpers (e.g., kpiEvaluator).
 
 ---
 
-## 2. Core Routing Specification
+## 2. Core Routing & Drill-Down Specification
 Vite-based code-splitting is enforced using `React.lazy` and `React.Suspense` configurations. Routes are declared inside `src/App.tsx`:
 
 - `/`: Core Executive Dashboard (`DashboardPage`)
@@ -30,6 +31,13 @@ Vite-based code-splitting is enforced using `React.lazy` and `React.Suspense` co
 - `/executions`: bitácoras de Ejecuciones (`ExecutionsPage`)
 - `/settings`: placeholder de Configuración (`SettingsPage`)
 - `/not-found`: error de página (`NotFoundPage`)
+
+### Drill-down semantic paths:
+- `/engineers/:engineerId` (or `/engineers/:engineerId/monthly` or `/engineers/:engineerId/daily`): Engineer performance drilldown sheet.
+- `/clients/:clientId`: Client performance drilldown sheet.
+- `/technologies/:technologyId`: Technology performance drilldown sheet.
+- `/teams/:teamId`: Team performance drilldown sheet.
+- `/executions/:executionId`: Operational KPI Execution detailed logs and audit sheet.
 
 All unregistered routes automatically fallback-redirect to `/not-found`.
 
@@ -46,30 +54,24 @@ Calculated KPIs, historical daily/monthly snapshots, catalog lists, and executio
 
 ---
 
-## 4. API Integration & Mock Failover Layer
-All REST hooks query the FastAPI backend (`baseURL` resolved via relative Vite proxy `/api`). If the API is offline, empty, or returns a failing payload during initial deployments, hooks automatically trigger failover-resolution through the dedicated mock service layer (`src/services/mock/`):
+## 4. KPI Status Evaluation Framework (CSAP-007)
+Métricas are evaluated dynamically using a configuration-driven policy framework located in `src/utils/kpiEvaluator.ts`. Each KPI defines:
+- **target**: Target performance value.
+- **warning**: Margin threshold triggering warnings.
+- **critical**: Critical margin threshold.
+- **direction**: `"higher-is-better"` (e.g. SLA) or `"lower-is-better"` (e.g. Response/Resolution times).
 
-```text
-+----------------------+      +----------------------+
-|  React Query Hook    | ---> | FastAPI REST Backend |
-+----------------------+      +----------------------+
-          |                              |
-          v (Offline / Error)            v (Active)
-+----------------------+      +----------------------+
-|  Mock Service Layer  |      |   Real JSON Payload  |
-+----------------------+      +----------------------+
-```
+The presentational layer only consumes evaluated status tags (`success`, `warning`, `critical`, `neutral`), keeping business SLA logic fully isolated.
 
 ---
 
-## 5. Chart Strategy (Apache ECharts)
+## 5. Grid Toolbar & Layout Persistence (CSAP-007)
+We integrated `GridToolbar` into the custom `DataGrid` wrapper. Layout changes (column widths, pinning, order, visibility, active sorting, active filters) are automatically serialized and persisted inside `localStorage` under versioned keys matching the pattern:
+`csap:grid:<grid-key>:v1`
+
+---
+
+## 6. Chart Strategy (Apache ECharts)
 - Standard Line, Bar, Pie, and Area charts are wrapped inside the reusable, stateless `EChartCard` wrapper component (`src/components/EChartCard.tsx`).
 - Responsive auto-resizing is handled dynamically via native `ResizeObserver` instances.
 - Theme switching triggers instant repaint using ECharts' built-in Dark Mode scheme on active color scheme modifications.
-
----
-
-## 6. Grid Strategy (AG Grid Community)
-Tabular analytical datasets are presented using the stateless `DataGrid` component (`src/components/DataGrid.tsx`):
-- Standard features: Multi-column sorting, column filtering, pagination page select, and resizing are enabled.
-- Skin: Themes automatically toggle between `ag-theme-alpine` and `ag-theme-alpine-dark` depending on the user's active theme preference.
